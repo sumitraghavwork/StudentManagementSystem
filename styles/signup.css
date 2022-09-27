@@ -1,0 +1,33 @@
+#signup-form-div{
+    width: 25%;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+
+}
+#signup-form-div>h2{
+    text-align: center;                
+    
+}
+#signup-form-div>form{
+    font-size: 18px;
+}
+#signup-form-div>form>input,select{
+    width: 100%;
+    margin: 10px auto;
+    padding: 8px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+#signup-form-div>form>input[type=submit]{
+    cursor: pointer;
+    color: white;
+    background-color: red;
+}
+#signup-form-div>form>input[type=submit]:hover{
+    background-color: rgb(219, 128, 128);
+}
+#signup-form-div>form>p{
+    text-align: center;
+}

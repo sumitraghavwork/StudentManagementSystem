@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/assignment.css">
+</head>
+<body>
+    <div id="navbar">
+        <div onclick="window.location.href='./admin.html'">
+            <img src="https://www.masaischool.com/img/navbar/logo.svg" alt="logo">
+        </div>
+        <div>
+            <div class="active" onclick="window.location.href='./user.html'">User List</div>
+            <div class="active" onclick="window.location.href='./lecture.html'">Lectures</div>
+            <div class="active" onclick="window.location.href='./assignment.html'">Assignments</div>
+            <div>Tickets</div>
+            <div>Discussions</div>
+            <div>Notifications</div>
+            <div>Electives</div>
+        </div>
+        <div>
+            <div onclick="window.location.href='./profile.html'">Profile</div>
+            <div id="user-name">User_Name
+                <!-- add student name here  -->
+            </div>
+        </div>
+        <div>
+            <div onclick="logout()" id="loginStatus">LOGOUT</div>
+        </div>
+    </div>
+    <div id="schedule-bar">
+        <div>Today's Schedule</div>
+        <div>
+            <div onclick="window.location.href='./create.html'">Create New</div>
+            <div>Edit Lectures</div>
+        </div>
+    </div>
+    <div id="main-container">
+        <div>
+            <div id="sort_filter">
+                <button onclick="sortlh()">OLD to NEW</button>
+                <button onclick="sorthl()">NEW to OLD</button>
+                <select name="subject" id="subject" onchange="filterList()">
+                    <option value="all">Select Subject</option>
+                    <option value="scrum">SCRUM</option>
+                    <option value="dsa">DSA</option>
+                    <option value="csbt">CSBT</option>
+                    <option value="coding">Coding</option>
+                    <option value="ia-standup">IA-StandUp</option>
+                </select>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Instructor</th>
+                    <th>Topic</th>
+                    <th>Description</th>
+                    <th>Remove</th>
+                </tr>                
+            </thead>
+            <tbody id="table_body">
+                <!-- add data here  -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+<script src="../scripts/navbar.js"></script>
+<script>
+    var lectureArr = JSON.parse(localStorage.getItem('lectureData')) || []
+    window.addEventListener('load',()=>{
+        console.log(lectureArr)
+        addAssignmentList(lectureArr)
+    })
+    addAssignmentList=(arr)=>{
+        let container = document.getElementById('table_body')
+        container.innerHTML = null
+        arr.forEach((ele,i) => {
+            let {subject,instructor_name,time,date,topic,description} = ele
+            const row = document.createElement('tr');
+            const atime = document.createElement('td');
+            time.substring(0,2)>12?atime.innerText=`${time} PM`:atime.innerText=`${time} AM`
+            const adate = document.createElement('td');
+            adate.innerText = date
+            const asubject = document.createElement('td');
+            asubject.innerText = subject
+            const ainstructor_name = document.createElement('td');   
+            ainstructor_name.innerText = instructor_name         
+            const atopic = document.createElement('td');
+            atopic.innerText = topic
+            const adescription = document.createElement('td');
+            adescription.innerText = description
+            const removedata = document.createElement('td');
+            removedata.setAttribute('class','removebtn')
+            removedata.innerText ='Remove'
+            removedata.addEventListener('click',()=>{
+                removeItem(ele,i)
+            })
+            row.setAttribute('class','item')
+            row.append(atime,adate,asubject,ainstructor_name,atopic,adescription,removedata)
+            container.append(row)
+        });
+    }
+    removeItem=(ele,i)=>{
+        event.target.parentNode.remove();
+        var lectureArr = JSON.parse(localStorage.getItem('lectureData')) || []
+        let filtered = lectureArr.filter((el,index)=>{
+            return index!=i
+        })
+        localStorage.setItem('lectureData',JSON.stringify(filtered))
+        addAssignmentList(filtered)
+    }
+    sortlh=()=>{
+        lectureArr.sort((a,b)=>{
+            return (new Date(a.date) - new Date(b.date))
+        })
+        console.log(lectureArr)
+        addAssignmentList(lectureArr) 
+    }
+    sorthl=()=>{
+        lectureArr.sort((a,b)=>{
+            return (new Date(b.date) - new Date(a.date))
+        })
+        console.log(lectureArr)
+        addAssignmentList(lectureArr) 
+    }
+    filterList=()=>{
+        let subj = document.getElementById('subject').value
+        let arr = JSON.parse(localStorage.getItem('lectureData')) || []
+        if(subj=="all"){
+            lectureArr = arr
+            addAssignmentList(arr)
+            return
+        }
+        let filtered = arr.filter((ele)=>{
+            return subj == ele.subject
+        })
+        lectureArr = filtered
+        console.log(lectureArr)
+        addAssignmentList(filtered) 
+    }
+</script>

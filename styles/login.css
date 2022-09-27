@@ -1,0 +1,33 @@
+#login-form-div{
+    width: 25%;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+
+}
+#login-form-div>h2{
+    text-align: center;                
+    
+}
+#login-form-div>form{
+    font-size: 18px;
+}
+#login-form-div>form>input,select{
+    width: 100%;
+    margin: 15px auto;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+#login-form-div>form>input[type=submit]{
+    cursor: pointer;
+    color: white;
+    background-color: red;
+}
+#login-form-div>form>input[type=submit]:hover{
+    background-color: rgb(219, 128, 128);
+}
+#login-form-div>form>p{
+    text-align: center;
+}

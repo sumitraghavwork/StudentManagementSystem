@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <link rel="stylesheet" href="./styles/homeNav.css">
+        <link rel="stylesheet" href="./styles/login.css">
+        <link rel="stylesheet" href="./styles/navbar.css">
+    </head>
+    <body>
+      <div id="navbar">
+        <div onclick="window.location.href='./index.html'">
+            <img src="https://www.masaischool.com/img/navbar/logo.svg" alt="logo">
+        </div>
+        <div>
+            <div>COURSES</div>
+            <div>FEES & ISA</div>
+            <div>ABOUT US</div>
+            <div>HIRE FROM US</div>
+            <div>FAQ</div>
+            <div>EVENTS</div>
+        </div>
+        <div>
+            <div onclick="window.location.href='./login.html'">LOGIN</div>
+            <div onclick="window.location.href='./signup.html'">SIGNUP</div>
+        </div>
+      </div>
+        <div id="login-form-div">
+            <h2>Login</h2>
+            <form action="" id="user_data">
+              <label for="user-type">Select User Type</label>
+              <select name="" id="user-type">
+                <option value="">Select User Type</option>
+                <option value="student">Student</option>
+                <option value="admin">Admin</option>
+              </select><br>
+              <label for="email">Email</label>
+              <input type="email" name="email" id="email" placeholder="Enter Email" />
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password" placeholder="Enter Passsword"/>
+              <input type="submit" name="signup" id="signup" value="Login"/>
+              <p>Don't have an account? <a href="signup.html">SignUp</a></p>
+            </form>
+        </div>
+    </body>
+</html>
+<script src="./scripts/login.js"></script>
+    

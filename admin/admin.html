@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/assignment.css">
+    <style>
+        #schedule-bar>div:nth-child(2){
+            width: 40%;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <div onclick="window.location.href='./admin.html'">
+            <img src="https://www.masaischool.com/img/navbar/logo.svg" alt="logo">
+        </div>
+        <div>
+            <div class="active" onclick="window.location.href='./user.html'">User List</div>
+            <div class="active" onclick="window.location.href='./lecture.html'">Lectures</div>
+            <div class="active" onclick="window.location.href='./assignment.html'">Assignments</div>
+            <div>Tickets</div>
+            <div>Discussions</div>
+            <div>Notifications</div>
+            <div>Electives</div>
+        </div>
+        <div>
+            <div onclick="window.location.href='./profile.html'">Profile</div>
+            <div id="user-name">User_Name
+                <!-- add student name here  -->
+            </div>
+        </div>
+        <div>
+            <div onclick="logout()" id="loginStatus">LOGOUT</div>
+        </div>
+    </div>
+    <div id="schedule-bar">
+        <div>Today's Schedule</div>
+        <div>
+            <div onclick="window.location.href='./user.html'">Users List</div>
+            <div onclick="window.location.href='./assignment.html'">Assignments List</div>
+            <div onclick="window.location.href='./lecture.html'">Lecture List</div>
+        </div>
+    </div>
+    <div id="main-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Instructor</th>
+                    <th>Topic</th>
+                    <th>Description</th>
+                </tr>                
+            </thead>
+            <tbody id="table_body">
+                <!-- add data here  -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+<script src="../scripts/navbar.js"></script>
+<script>
+    let assignmentArr = JSON.parse(localStorage.getItem('assignmentData')) || []
+    let lectureArr = JSON.parse(localStorage.getItem('lectureData')) || []
+    window.addEventListener('load',()=>{
+        let mergedarr = getcommonarr(assignmentArr,lectureArr) || []
+        console.log(mergedarr)
+        addList(mergedarr)
+    })
+    getcommonarr=(arr1,arr2)=>{
+        let res=[]
+        let a1=0
+        let a2=0
+        while(a1<arr1.length && a2<arr2.length){
+            if(arr1[a1].date<arr2[a2].date){
+                res.push(arr1[a1])
+                a1++
+            }else{
+                res.push(arr2[a2])
+                a2++
+            }
+        }
+        while(a1<arr1.length){
+            res.push(arr1[a1])
+            a1++
+        }
+        while(a2<arr2.length){
+            res.push(arr2[a2])
+            a2++
+        }
+        res.sort((a,b)=>{
+            return new Date(a.date) - new Date(b.date)
+        })
+        return res
+    }
+    addList=(arr)=>{
+        let container = document.getElementById('table_body')
+        container.innerHTML = null
+        arr.forEach((ele,i) => {
+            let {subject,instructor_name,time,date,topic,description,type} = ele
+            const row = document.createElement('tr');
+            const atype = document.createElement('td');
+            atype.innerText = type
+            type=='lecture'?atype.style.backgroundColor='purple':atype.style.backgroundColor='green'
+            const atime = document.createElement('td');
+            time.substring(0,2)>12?atime.innerText=`${time} PM`:atime.innerText=`${time} AM`
+            const adate = document.createElement('td');
+            adate.innerText = date
+            const asubject = document.createElement('td');
+            asubject.innerText = subject
+            const ainstructor_name = document.createElement('td');   
+            ainstructor_name.innerText = instructor_name         
+            const atopic = document.createElement('td');
+            atopic.innerText = topic
+            const adescription = document.createElement('td');
+            adescription.innerText = description
+            row.setAttribute('class','item')
+            row.append(atype,atime,adate,asubject,ainstructor_name,atopic,adescription)
+            container.append(row)
+        });
+    }
+</script>

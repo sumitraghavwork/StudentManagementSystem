@@ -1,0 +1,35 @@
+#container{
+    width: 60%;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 10px;
+}
+.create_form{
+    width: 40%;
+    padding: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 10px;
+}
+.create_form>h2{
+    text-align: center;
+}
+.create_form>form>input,select{
+    width: 100%;
+    margin: 5px auto;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+.create_form>form>input[type=submit]{
+    cursor: pointer;
+    color: white;
+    background-color: red;
+}
+.create_form>form>input[type=submit]:hover{
+    background-color: rgb(219, 128, 128);
+}

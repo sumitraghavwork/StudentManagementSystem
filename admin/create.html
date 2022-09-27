@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/create.css">
+</head>
+<body>
+    <div id="navbar">
+        <div onclick="window.location.href='./admin.html'">
+            <img src="https://www.masaischool.com/img/navbar/logo.svg" alt="logo">
+        </div>
+        <div>
+            <div class="active" onclick="window.location.href='./user.html'">User List</div>
+            <div class="active" onclick="window.location.href='./lecture.html'">Lectures</div>
+            <div class="active" onclick="window.location.href='./assignment.html'">Assignments</div>
+            <div>Tickets</div>
+            <div>Discussions</div>
+            <div>Notifications</div>
+            <div>Electives</div>
+        </div>
+        <div>
+            <div onclick="window.location.href='./profile.html'">Profile</div>
+            <div id="user-name">User_Name
+                <!-- add student name here  -->
+            </div>
+        </div>
+        <div>
+            <div onclick="logout()" id="loginStatus">LOGOUT</div>
+        </div>
+    </div>
+    <div id="schedule-bar">
+        <div>Today's Schedule</div>
+        <div>
+            <div>Bookmarks</div>
+            <div>Refer & Earn</div>
+        </div>
+    </div>
+    <div id="container">
+        <div class="create_form">
+            <h2>Add User</h2>
+            <form action="" id="create_user">
+                <label for="fullname">Full Name</label>
+                <input type="text" name="fullname" id="fullname" placeholder="Enter Full Name"/>
+                <label for="email">Email / Username</label>
+                <input type="email" name="email" id="email" placeholder="Enter Email" />
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter Passsword"/>
+                <label for="">Enter Student Id Code</label>
+                <input type="text" name="" id="student_id" placeholder="Enter Student Id Code-(fw19_****)">
+                <input type="submit" name="signup" id="signup" value="ADD STUDENT"/>
+            </form>
+        </div>
+        <div class="create_form">
+            <h2>Add Item</h2>
+            <form action="" id="create_data">
+                <select name="" id="item_type">
+                    <option value="">Select Type</option>
+                    <option value="assignment">Assignment</option>
+                    <option value="lecture">Lectures</option>
+                </select>
+                <select name="subject" id="subject">
+                    <option value="">Select Subject</option>
+                    <option value="scrum">SCRUM</option>
+                    <option value="dsa">DSA</option>
+                    <option value="csbt">CSBT</option>
+                    <option value="coding">Coding</option>
+                    <option value="ia-standup">IA-StandUp</option>
+                </select><br>
+                <label for="">Enter Instructor Name</label>
+                <input type="text" name="" id="instructor_name" placeholder="Enter Instructor Name">
+                <label for="">Enter Start Time</label>
+                <input type="time" name="" id="time" placeholder="Enter Start Time">
+                <label for="">Enter Date</label>
+                <input type="date" name="" id="date" placeholder="Enter Date">
+                <input type="text" name="" id="topic" placeholder="Enter Lecture / Assignment Topic Name">
+                <input type="text" name="" id="description" placeholder="Enter Description">
+                <input type="submit" name="" id="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>
+<script src="../scripts/navbar.js"></script>
+<script src="../scripts/user.js"></script>
+<script>
+    class CreateData{
+        constructor(subject,instructor_name,time,date,topic,description){
+            this.subject = subject
+            this.instructor_name = instructor_name
+            this.time = time
+            this.date = date
+            this.topic = topic
+            this.description = description
+        }
+    }
+    class Assignment extends CreateData{
+        constructor(subject,instructor_name,time,date,topic,description,type){
+            super(subject,instructor_name,time,date,topic,description)
+            this.type = type
+        }
+    }
+    class Lecture extends CreateData{
+        constructor(subject,instructor_name,time,date,topic,description,type){
+            super(subject,instructor_name,time,date,topic,description)
+            this.type = type
+        }
+    }
+    let assignmentArr = JSON.parse(localStorage.getItem('assignmentData')) || []
+    let lectureArr = JSON.parse(localStorage.getItem('lectureData')) || []
+    var studentArr = JSON.parse(localStorage.getItem('studentUser')) || []
+    document.getElementById('create_data').addEventListener('submit',()=>{
+        addData()
+    })
+    document.getElementById('create_user').addEventListener('submit',()=>{
+        addNewStudent()
+    })
+    addNewStudent=()=>{
+        event.preventDefault()
+        let form = document.getElementById('create_user')
+        let name = form.fullname.value
+        let email = form.email.value
+        let password = form.password.value  
+        let id = form.student_id.value
+        if(name==''||email==''||password==''||id==''){
+            alert('Invalid Details')
+            return
+        }            
+        let student = new Student(name,id)
+        if(!verfiedDuplicate(email)){
+            return
+        }
+        student.signup(email,password)        
+        studentArr.push(student)
+        localStorage.setItem('studentUser',JSON.stringify(studentArr))
+        console.log(student)        
+    }
+    addData=()=>{
+        event.preventDefault()
+        let type = document.getElementById('item_type').value
+
+        let form = document.getElementById('create_data')        
+        let subject = form.subject.value
+        let instructor_name = form.instructor_name.value
+        let time = form.time.value
+        let date = form.date.value
+        let topic = form.topic.value
+        let description = form.description.value
+        if(type=='assignment'){
+            let assignment = new Assignment(subject,instructor_name,time,date,topic,description,type)
+            assignmentArr.push(assignment)
+            console.log(assignment)
+            localStorage.setItem('assignmentData',JSON.stringify(assignmentArr))
+        }else{
+            let lecture = new Lecture(subject,instructor_name,time,date,topic,description,type)
+            lectureArr.push(lecture)
+            console.log(lecture)
+            localStorage.setItem('lectureData',JSON.stringify(lectureArr))
+        }
+    }
+    verfiedDuplicate=(email)=>{
+    for(let ele of studentArr){
+        let {email:useremail} = ele
+        if(email==useremail){
+            alert('User Details Already Exists') 
+            return false
+        }
+       
+    }
+    return true
+}
+
+</script>

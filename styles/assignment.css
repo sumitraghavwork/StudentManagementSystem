@@ -1,0 +1,28 @@
+#main-container{
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 10px;
+}
+#main-container>table{
+    width: 100%;
+    margin: auto;
+    padding: 10px;
+    text-align: center;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 10px;
+}
+#main-container>table tr{
+    height: 30px;
+}
+#main-container>table>thead>tr>th{
+    background-color: aqua;
+}
+.removebtn{
+    background-color: red;
+    cursor: pointer;
+}
+#sort_filter>button,select{
+    padding: 5px 12px;
+}
